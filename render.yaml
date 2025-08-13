@@ -56,16 +56,12 @@
           name: redis
           property: connectionString
 
-  - type: worker
+    - type: worker
     name: celery-beat
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: celery -A core beat -l info --pidfile /opt/beat/beat.pid --schedule /opt/beat/celerybeat-schedule
-    disk:
-      name: beat-disk
-      mountPath: /opt/beat
-      sizeGB: 1
+    startCommand: celery -A core beat -l info --pidfile /tmp/beat.pid --schedule /tmp/celerybeat-schedule
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
