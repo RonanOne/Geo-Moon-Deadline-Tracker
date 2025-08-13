@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 """
-This script functions as the command‑line entry point for the Django application.
+This script functions as the commandâ€‘line entry point for the Django application.
 
 It sets the default settings module to `deadlines.settings` and then delegates
-execution to Django’s management command system.  You can use it to run
+execution to Djangoâ€™s management command system.  You can use it to run
 migrations, start the development server or invoke custom commands such as the
 CSV import.
 """

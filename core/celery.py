@@ -1,4 +1,4 @@
-"""
+﻿"""
 Celery configuration module for the Deadline Tracker project.
 
 This file creates the Celery application and configures it from Django's
@@ -13,7 +13,7 @@ import os
 from celery import Celery
 
 # Set default Django settings module so that Celery can read configuration
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deadlines.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","core.settings")
 
 app = Celery("deadlines")
 app.config_from_object("django.conf:settings", namespace="CELERY")

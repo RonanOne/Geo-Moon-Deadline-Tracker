@@ -1,7 +1,7 @@
-"""
+﻿"""
 Django settings for the Deadline Tracker project.
 
-This configuration is intentionally concise and self‑documenting to make it
+This configuration is intentionally concise and selfâ€‘documenting to make it
 easy to understand and adapt.  For production, override sensitive values such
 as the secret key and email credentials via environment variables.
 """
@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ###############################################################################
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "replace‑me‑with‑a‑random‑string")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "replaceâ€‘meâ€‘withâ€‘aâ€‘randomâ€‘string")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DJANGO_DEBUG", "True").lower() in {"true", "1", "yes"}
@@ -31,6 +31,7 @@ ALLOWED_HOSTS: list[str] = [host.strip() for host in os.environ.get("ALLOWED_HOS
 ###############################################################################
 
 INSTALLED_APPS = [
+    'deadlines.apps.DeadlinesConfig',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

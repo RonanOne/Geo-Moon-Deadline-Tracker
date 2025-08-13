@@ -1,8 +1,8 @@
-"""
+﻿"""
 WSGI config for the Deadline Tracker project.
 
 This module contains the WSGI application used by Django's deployment
-utilities and by WSGI servers such as Gunicorn.  It exposes a module‑level
+utilities and by WSGI servers such as Gunicorn.  It exposes a moduleâ€‘level
 variable called ``application`` that is used to serve your Django application.
 """
 from __future__ import annotations
