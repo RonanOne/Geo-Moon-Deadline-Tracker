@@ -1,0 +1,95 @@
+services:
+  # Web (Django)
+  - type: web
+    runtime: python
+    name: deadline-web
+    plan: starter
+    buildCommand: ./build.sh
+    startCommand: gunicorn core.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: deadline-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: deadline-kv
+          type: keyvalue
+          property: connectionString
+      - key: DJANGO_DEBUG
+        value: "false"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com,localhost,127.0.0.1"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://*.onrender.com,https://localhost,https://127.0.0.1"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEFAULT_FROM_EMAIL
+        value: "no-reply@yourdomain"
+      - key: EMAIL_BACKEND
+        value: "django.core.mail.backends.smtp.EmailBackend"
+      - key: EMAIL_HOST
+        value: "smtp-relay.brevo.com"
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_USE_TLS
+        value: "true"
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+
+  # Celery worker
+  - type: worker
+    runtime: python
+    name: deadline-worker
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A core worker -l INFO
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: deadline-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: deadline-kv
+          type: keyvalue
+          property: connectionString
+      - key: SECRET_KEY
+        fromService:
+          name: deadline-web
+          type: web
+          envVarKey: SECRET_KEY
+
+  # Celery beat (scheduler)
+  - type: worker
+    runtime: python
+    name: deadline-beat
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A core beat -l INFO
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: deadline-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: deadline-kv
+          type: keyvalue
+          property: connectionString
+      - key: SECRET_KEY
+        fromService:
+          name: deadline-web
+          type: web
+          envVarKey: SECRET_KEY
+
+  # Redis-compatible key value store for Celery broker/result
+  - type: keyvalue
+    name: deadline-kv
+    ipAllowList: []
+
+databases:
+  - name: deadline-db
+    plan: free
